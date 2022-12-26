@@ -1,8 +1,8 @@
-from BipartiteGraph import BipartiteGraph
+from NetworkFlow import NetworkFlow
 
 class DeviceSelection:
 
-    _slots_ = "_graph","_N","_X","_maxFlow","_partition","_generator"
+    _slots_ = "_networkFlow","_N","_X","_maxFlow","_partition","_generator"
 
 
     #The object is created as follows:
@@ -18,18 +18,16 @@ class DeviceSelection:
     def __init__(self,N, X, data):
         """
             Create a device selection object
-            N: the number of devices
+            N: a tuple containing the devices names
             X: the number of X-term frases on witch the devices are tested (from 3 to X)
             data: a dictionary with the values of the X-term frases correctly interpreted by the device
         """
-        self._graph = BipartiteGraph()
+        self._networkFlow = NetworkFlow()
         self._N = N
         self._X = X
-        for elem in N:
-            self._graph.insert_vertex(elem)
-        self._graph.make_networkFlow(data,X)
-        self._maxFlow = self._graph.fordFulkerson()
-        self._partition = self._graph.makePartition()
+        self._networkFlow.insertDevices(N,data,X)
+        self._maxFlow = self._networkFlow.fordFulkerson()
+        self._partition = self._networkFlow.makePartition()
         self._generator = [None] * self.countDevices()
         for i in range(self.countDevices()):
             self._generator[i] = self._makeGenerator(i)
