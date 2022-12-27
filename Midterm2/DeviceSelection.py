@@ -55,7 +55,7 @@ class DeviceSelection:
             #if  the iteration is ended I create a new generator so taht the next time I call nextDevice(i) I can iterate again
             self._generator[i] = self._makeGenerator(i)
             return None
- 
+    
     #------------------------- Private methods -------------------------
     def _makeGenerator(self,count):
         """
