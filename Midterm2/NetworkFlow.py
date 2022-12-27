@@ -86,25 +86,26 @@ class NetworkFlow():
             the graph is changed to be the last residual graph built by the algorithm
         """
         flow = 0
-        path = {}
-        path[self._source] = None
-        while _bfs(self._graph,self._source,self._sink,path):
-            bottleNeck = 1 # all the edges have capacity 1 by construction this menas that the bottleNeck is always 1, the variable bottleNeck is used to make the code more general
-            flow+=bottleNeck
-            edge = path[self._sink]
-            while edge != None:
-                v1,v2 = edge.endpoints()
-                edge.setElement(edge.element()-bottleNeck)
-                backwardEdge = self._graph.get_edge(v2,v1)
-                if  backwardEdge == None:
-                    backwardEdge = self._graph.insert_edge(v2,v1,0) #backward edge
-                backwardEdge.setElement(backwardEdge.element()+bottleNeck)
-                edge = path.get(v1)
-            path = {}
-            path[self._source] = None
+        path = {}                                                          # path is a dictionary that maps each vertex to the edge that is traversed to reach it
+        path[self._source] = None                                          # the source cannot be reached by any path for construction                         
+        while _bfs(self._graph,self._source,self._sink,path):              # we are searching all the possible paths from the source to the sink
+            bottleNeck = 1                                                 # all the edges have capacity 1 by construction this menas that the bottleNeck is always 1, the variable bottleNeck is used to make the code more general
+            flow+=bottleNeck                                               # the total flow can be augmented by the bottleNeck
+            edge = path[self._sink]                                        # edge is the edge that is traversed to reach the sink, we start analyzing the bath from the sink to the source
+            while edge != None:                                            # Edge will be none only when we reach the source
+                v1,v2 = edge.endpoints()                                   # v1 is the source of the edge and v2 is the destination of the edge
+                edge.setElement(edge.element()-bottleNeck)                 # Reduce the remaining capacity of the forward edge by the bottleNeck (this means saturate the edge because the maximum capacity is 1)
+                backwardEdge = self._graph.get_edge(v2,v1)                 # We must change (and augment) the backward edge into the residual graph (that as said in this case is the same as the original graph) 
+                if  backwardEdge == None:                                  # If the backward edge does not exist, we create it because now we can send back the flow that is going from v1 to v2
+                    backwardEdge = self._graph.insert_edge(v2,v1,0)        # Only for convenience the backward edge is added with a remaining capacity of 0 but it will be increased immediately
+                backwardEdge.setElement(backwardEdge.element()+bottleNeck) # Increase the remaining capacity of the backward edge by the bottleNeck, this means thath we can send back more flow now
+                edge = path.get(v1)                                        # go to the next edge in the path
+            path = {}                                                      # reset the path because we are going to search a new path for the sink if it exists
+            path[self._source] = None                                     
         return flow
-        
-    # Complexity: O(?)
+
+
+    
     def makePartition(self):
         """
             Return a group of partition: in each partition there are a ranked group of devices built as follows:
@@ -113,13 +114,50 @@ class NetworkFlow():
             - so on...
         """
         partition = []
-        for device in self._dominatorSet.values():
-            if self._isHead(device):
-                subpartition = []
-                self._makePartitionFromHead(device,subpartition)
-                partition.append(subpartition)
+        for device in self._dominatorSet.values():                  # We check all the dominator devices
+            if self._isHead(device):                                # If the device is a head of a partition we build the partition starting from him (a device is a head if it is not dominated by any other device)     
+                subpartition = []                                   # Checking if a device is a head is done by checking if the only edge to the sink of that device in the dominated set has a remaining capacity of 1 
+                self._makePartitionFromHead(device,subpartition)    # (there isn't a matching with that device and so it must be a head)
+                partition.append(subpartition)                      # We add the partition to the list of partitions and keep searching for other heads
         return partition
 
+
+
+    # Complexity: ?
+    # Note that we can be sure tath if the head dominates a device let's call it B this menas that all the devices dominated by B 
+    # are dominated by the head for the transitivity of the dominance relation
+    def _makePartitionFromHead(self,head,partition):
+        """
+            Build a partition starting from a head device
+        """
+        partition.append(head.element())                                                # Add the head to the partition
+        for outgoingEdge in self._graph.incident_edges(head):                           # Start searching for the edges choosen by the ford fulkerson algorithm (the edges that have a remaining capacity of 0)
+            if outgoingEdge.element() == 0:
+                newElement = outgoingEdge.opposite(head).element()                      # We get the device that is connected to the head by that edge and we repeat the process by searching the dominated
+                self._makePartitionFromHead(self._dominatorSet[newElement],partition)   # device in the dominator set till the end of the partition (a device that is only dominated but not dominates any other device))
+        
+    # Complexity: O( N*)
+    # def makePartition(self):
+    #     partition = []
+    #     partitionCount = 0
+    #     for key,val in self._dominatorSet.items():    
+    #         if self._isHead(val):
+    #             subpartition = []
+    #             subpartition.append(key)
+    #             tempHead = val
+    #             while(True):
+    #                 if self._graph.degree(tempHead)==0:
+    #                     break
+    #                 for edge in self._graph.incident_edges(tempHead):
+    #                     if edge.element()==0:
+    #                         tempHead = self._dominatorSet[edge.opposite(tempHead).element()]
+    #                         subpartition.append(tempHead.element())
+    #                         break
+    #             break
+    #             partition.append(subpartition)
+    #             partitionCount += 1
+    #     return partition
+    
     #------------------------- Private methods -------------------------
     # Complexity: O(X)
     def _isBetter(self, dominator, dominated, data, X):
@@ -141,13 +179,7 @@ class NetworkFlow():
         """
         return self._graph.get_edge(self._dominatedSet[device.element()],self._sink).element() != 0
 
-    # Complexity: ?
-    def _makePartitionFromHead(self,head,partition):
-        """
-            Build a partition starting from a head device
-        """
-        partition.append(head.element())
-        for outgoingEdge in self._graph.incident_edges(head):
-            if outgoingEdge.element() == 0:
-                newElement = outgoingEdge.opposite(head).element()
-                self._makePartitionFromHead(self._dominatorSet[newElement],partition)        
+    
+
+
+    
