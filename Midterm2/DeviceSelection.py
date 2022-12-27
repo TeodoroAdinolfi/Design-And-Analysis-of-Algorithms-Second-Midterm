@@ -35,12 +35,14 @@ class DeviceSelection:
     # The max flow can be interpreted as the number of devices that are dominated by a another device
     # If we want to know the number of devices that are not dominated by any other device we can subtract the max flow from the number of devices
     # in this way we now how many classes of devices we have because each class must have exactly one device that is not dominated by any other device
+    # Complexity: O(1)
     def countDevices(self):
         """
             Return the number of sub-partition of the set of devices
         """
         return len(self._N) - self._maxFlow
 
+    # Complexity: O(1)
     def nextDevice(self,i):
         """
             Return the next device in the partition "i" or none if the iteration is ended
@@ -57,6 +59,8 @@ class DeviceSelection:
             return None
     
     #------------------------- Private methods -------------------------
+    
+    # Complexity: O(1)
     def _makeGenerator(self,count):
         """
             Return a generator that iterate over the partition "count"

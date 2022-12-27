@@ -3,6 +3,7 @@ from TdP_collections.graphs.graph import Graph
 
 # This method perfomrs a BFS that is interrubted when a path to destination is founded.
 # When the edges are labeled with a capacity that is 0, the edge cannot be traversed.
+# Complexity: O( N + M ) with N the number of vertices and M the number of edges
 def _bfs( g, source, destination, discovered):
     """Perform a BFS on the graph g, return true if there is a path from source to destination, false otherwise."""
     founded = False
@@ -52,7 +53,7 @@ class NetworkFlow():
         self._dominatedSet = {}
         self._dominatorSet = {}
 
-    # Complexity: O(n^2 X)
+    # Complexity: O(N^2 * X)
     def insertDevices(self, deviceList,data,X):
         """
             Adds the devices to the network flow
@@ -79,7 +80,7 @@ class NetworkFlow():
                     if self._isBetter(dominator,dominated,data,X):
                         self._graph.insert_edge(self._dominatorSet[dominator],self._dominatedSet[dominated],1)
         
-    # Complexity: O(n*m)
+    # Complexity: O(N*M) with N the number of devices and M the number edges
     def fordFulkerson(self):
         """
             Compute the maximum flow. In this case at the end of the algorithm
@@ -105,7 +106,7 @@ class NetworkFlow():
         return flow
 
 
-    
+    # Complexity: O( N + M ) where N is the number of vertex of the bipartyte graph and M the number of edges
     def makePartition(self):
         """
             Return a group of partition: in each partition there are a ranked group of devices built as follows:
@@ -123,7 +124,7 @@ class NetworkFlow():
 
 
 
-    # Complexity: ?
+    # Complexity: O( N + M ) where N is the number of vertex of the bipartyte graph and M the number of edges
     # Note that we can be sure tath if the head dominates a device let's call it B this menas that all the devices dominated by B 
     # are dominated by the head for the transitivity of the dominance relation
     def _makePartitionFromHead(self,head,partition):
@@ -157,8 +158,10 @@ class NetworkFlow():
     #             partitionCount += 1
     #     return partition
     
+    
     #------------------------- Private methods -------------------------
-    # Complexity: O(X)
+    
+    # Complexity: O(X) whith X the number X-terms tested
     def _isBetter(self, dominator, dominated, data, X):
         """
             Check if the dominator device is better than the dominated one 
