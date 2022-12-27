@@ -137,7 +137,7 @@ class NetworkFlow():
                 self._makePartitionFromHead(self._dominatorSet[newElement],partition)   # device in the dominator set till the end of the partition (a device that is only dominated but not dominates any other device))
         
     # Complexity: O( N*)
-    # def makePartition(self):
+    # def makePartition2(self):
     #     partition = []
     #     partitionCount = 0
     #     for key,val in self._dominatorSet.items():    
@@ -146,14 +146,13 @@ class NetworkFlow():
     #             subpartition.append(key)
     #             tempHead = val
     #             while(True):
-    #                 if self._graph.degree(tempHead)==0:
-    #                     break
     #                 for edge in self._graph.incident_edges(tempHead):
     #                     if edge.element()==0:
     #                         tempHead = self._dominatorSet[edge.opposite(tempHead).element()]
     #                         subpartition.append(tempHead.element())
     #                         break
-    #             break
+    #                 else:
+    #                     break
     #             partition.append(subpartition)
     #             partitionCount += 1
     #     return partition
