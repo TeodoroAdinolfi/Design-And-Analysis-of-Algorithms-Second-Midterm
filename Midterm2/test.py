@@ -28,10 +28,12 @@ else:
     print(end)
 
 #Testing DeviceSelection
-N = ('Device 1', 'Device 2', 'Device 3', 'Device 4', 'Device 5')
+N = ('Device 1', 'Device 2', 'Device 3', 'Device 4')
 X = 7
-data = {'Device 1': (100, 99, 85, 77, 63), 'Device 2': (101, 88, 82, 75, 60), 'Device 3': (98, 89, 84, 76, 61), 'Device 4': (110, 65, 65, 67, 80), 'Device 5': (95, 80, 80, 63, 60)}
-partition = [['Device 1', 'Device 3', 'Device 5'], ['Device 2'], ['Device 4']]
+#data = {'Device 1': (100, 99, 85, 77, 63), 'Device 2': (101, 88, 82, 75, 60), 'Device 3': (98, 89, 84, 76, 61), 'Device 4': (110, 65, 65, 67, 80), 'Device 5': (95, 80, 80, 63, 60)}
+#partition = [['Device 1', 'Device 3', 'Device 5'], ['Device 2'], ['Device 4']]
+data = {'Device 1': (5, 5, 5, 5, 5), 'Device 2': (1,1,1,1,3), 'Device 3': (4,4, 4, 4, 2), 'Device 4': (3,3,3,3,10)}
+partition = [['Device 1', 'Device 3'], ['Device 4','Device 2']]
 
 start = time()
 ds=DeviceSelection(N, X, data)
@@ -43,6 +45,7 @@ for i in range(C):
         subsets[i].append(dev)
         dev = ds.nextDevice(i)
 end=time()-start
+print(subsets)
 
 if sorted(subsets) != sorted(partition):
     print('FAIL')
