@@ -4,6 +4,7 @@ from time import time
 import os
 
 def read_data():
+    os.chdir("Midterm2/dataset3")
     f = open("transition",'r')
     t = dict()
     t["Start"] = dict()
@@ -55,7 +56,6 @@ def read_sol(r_num):
         s[w.readline().strip()]=roles[int(words[i])]
     f.close()
     w.close()
-
     return s
 
 #Testing pos_tagging
@@ -72,7 +72,7 @@ def read_sol(r_num):
 # E['Spot']={'Noun': 1/2, 'Modal': 0, 'Verb': 1/2}
 # E['Jane']={'Noun': 1, 'Modal': 0, 'Verb': 0}
 # out={'Will': 'Modal', 'Mary': 'Noun', 'Spot': 'Verb', 'Jane': 'Noun'}
-os.chdir('dataset1')
+
 T, E = read_data()
 R = tuple(T.keys())[1:len(T)]
 S = tuple(E.keys())

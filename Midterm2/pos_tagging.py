@@ -14,27 +14,11 @@ def pos_tagging(R, S, T, E):
             elif(j == n-1):
                 #Last word must consider that in addition to the probability calculeted in all the other case must be considered the trnasition from
                 # that word to the end (given that we know that is the last word of the sentence)
-                #Temporaneo
-                # maxVal = (mat[0][j-1])[0] * T[R[0]][R[i]]*T[R[i]]["End"]*E[S[j]][R[i]]
-                # maxIndex = 0
-                # for k in range(1,m):
-                #     if  (mat[k][j-1])[0] * T[R[k]][R[i]]*T[R[i]]["End"]*E[S[j]][R[i]] > maxVal:
-                #         maxIndex = k
-                #         maxVal = (mat[k][j-1])[0] * T[R[k]][R[i]]*T[R[i]]["End"]*E[S[j]][R[i]]
-                # #-----------
                 maxVal,maxIndex =  __argMax(mat,j-1,m,T,R,R[i])
                 mat[i][j] = maxVal*T[R[i]]["End"]*E[S[j]][R[i]],maxIndex            
             else:
                 #In the genral case we have to consider that the higer probability for the word S[i] in the role R[j] is given by the probability that
                 #the word S[j] has the role R[i] multiplied by the probability that the word S[j-1] has the role R[maxIndex] (the role that maximizes the total probability calculated in the previous step)
-                #Temporaneo
-                # maxVal = (mat[0][j-1])[0] * T[R[0]][R[i]]*E[S[j]][R[i]]
-                # maxIndex = 0
-                # for k in range(1,m):
-                #     if  (mat[k][j-1])[0] * T[R[k]][R[i]]*E[S[j]][R[i]] > maxVal:
-                #         maxIndex = k
-                #         maxVal = (mat[k][j-1])[0] * T[R[k]][R[i]]*E[S[j]][R[i]]
-                # #-----------
                 maxVal,maxIndex =  __argMax(mat,j-1,m,T,R,R[i]) 
                 mat[i][j] = maxVal*E[S[j]][R[i]],maxIndex
     tags = dict()
@@ -49,7 +33,7 @@ def pos_tagging(R, S, T, E):
     tags[S[n-1]]=R[lastMax]
     #Find the other words in the path by using the index stored with the previous word
     for i in range(n-1,0,-1):
-        lastMax= (mat[lastMax][i])[1] 
+        lastMax= (mat[lastMax][i])[1]
         tags[S[i-1]]=R[lastMax]
 
     return tags
@@ -64,3 +48,11 @@ def __argMax(mat,col,m,T,R,ri):
             max = (mat[k][col])[0] * T[R[k]][ri]
     return max,index
 
+#Temporaneo
+                # maxVal = (mat[0][j-1])[0] * T[R[0]][R[i]]*E[S[j]][R[i]]
+                # maxIndex = 0
+                # for k in range(1,m):
+                #     if  (mat[k][j-1])[0] * T[R[k]][R[i]]*E[S[j]][R[i]] > maxVal:
+                #         maxIndex = k
+                #         maxVal = (mat[k][j-1])[0] * T[R[k]][R[i]]*E[S[j]][R[i]]
+# #-----------
