@@ -73,7 +73,7 @@ def pos_read_sol(r_num):
 # E['Jane']={'Noun': 1, 'Modal': 0, 'Verb': 0}
 # out={'Will': 'Modal', 'Mary': 'Noun', 'Spot': 'Verb', 'Jane': 'Noun'}
 
-os.chdir("Midterm2/pos_dataset3")
+os.chdir("Midterm2/pos_dataset2")
 T, E = pos_read_data()
 R = tuple(T.keys())[1:len(T)]
 S = tuple(E.keys())
