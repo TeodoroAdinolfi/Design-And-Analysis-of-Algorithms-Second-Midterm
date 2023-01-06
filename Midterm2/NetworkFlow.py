@@ -23,7 +23,7 @@ def _bfs( g, source, destination, discovered):
     return founded
 
 # This class is used for the costruction of the graph representing the network flow
-# Adds a method to the Edge class that allows to set the element of the edge in this 
+# Adds a method to the Edge class that allows to set the label of the edge in this 
 # way we can change the capacity of the edge
 class ExtendedGraph(Graph):
 
@@ -73,7 +73,7 @@ class NetworkFlow():
             #Adding the devices to the sets
             self._dominatorSet[x] = dominantVertex
             self._dominatedSet[x] = dominatedVertex
-        #Adding the edges between the dominator and the dominated
+        #Adding the edges between the dominators and the dominateds
         for dominator in self._dominatorSet:
             for dominated in self._dominatedSet:
                 if dominator != dominated:
