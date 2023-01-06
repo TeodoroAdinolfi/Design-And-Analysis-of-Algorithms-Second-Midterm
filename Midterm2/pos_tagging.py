@@ -47,12 +47,3 @@ def __argMax(mat,col,m,T,R,ri):
             index = k
             max = (mat[k][col])[0] * T[R[k]][ri]
     return max,index
-
-#Temporaneo
-                # maxVal = (mat[0][j-1])[0] * T[R[0]][R[i]]*E[S[j]][R[i]]
-                # maxIndex = 0
-                # for k in range(1,m):
-                #     if  (mat[k][j-1])[0] * T[R[k]][R[i]]*E[S[j]][R[i]] > maxVal:
-                #         maxIndex = k
-                #         maxVal = (mat[k][j-1])[0] * T[R[k]][R[i]]*E[S[j]][R[i]]
-# #-----------

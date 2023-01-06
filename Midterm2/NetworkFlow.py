@@ -137,26 +137,6 @@ class NetworkFlow():
                 newElement = outgoingEdge.opposite(head).element()                      # We get the device that is connected to the head by that edge and we repeat the process by searching the dominated
                 self._makePartitionFromHead(self._dominatorSet[newElement],partition)   # device in the dominator set till the end of the partition (a device that is only dominated but not dominates any other device))
         
-    # Complexity: O( N*)
-    # def makePartition2(self):
-    #     partition = []
-    #     partitionCount = 0
-    #     for key,val in self._dominatorSet.items():    
-    #         if self._isHead(val):
-    #             subpartition = []
-    #             subpartition.append(key)
-    #             tempHead = val
-    #             while(True):
-    #                 for edge in self._graph.incident_edges(tempHead):
-    #                     if edge.element()==0:
-    #                         tempHead = self._dominatorSet[edge.opposite(tempHead).element()]
-    #                         subpartition.append(tempHead.element())
-    #                         break
-    #                 else:
-    #                     break
-    #             partition.append(subpartition)
-    #             partitionCount += 1
-    #     return partition
     
     
     #------------------------- Private methods -------------------------

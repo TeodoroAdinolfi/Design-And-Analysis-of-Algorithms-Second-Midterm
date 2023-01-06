@@ -73,7 +73,7 @@ def pos_read_sol(r_num):
 # E['Jane']={'Noun': 1, 'Modal': 0, 'Verb': 0}
 # out={'Will': 'Modal', 'Mary': 'Noun', 'Spot': 'Verb', 'Jane': 'Noun'}
 
-os.chdir("Midterm2/pos_dataset2")
+os.chdir("Midterm2/pos_dataset3")
 T, E = pos_read_data()
 R = tuple(T.keys())[1:len(T)]
 S = tuple(E.keys())
@@ -142,7 +142,7 @@ def dev_read_sol():
 #Devo tornare indietro di due cartelle
 os.chdir("..")
 os.chdir("..")
-os.chdir("Midterm2/dev_dataset1")
+os.chdir("Midterm2/dev_dataset3")
 data = dev_read_data()
 N = tuple(data.keys())
 X = len(data['D0'])+2
